@@ -77,6 +77,7 @@ void Simulation::handle_thread_arrived(const Event* event) {
 //	new_event->type = Event::DISPATCHER_INVOKED;
 //	new_event->time = event->time;
 //	events.push(new_event);
+  	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
   }
   
   cout << "event: THREAD_ARRIVED" << endl;
