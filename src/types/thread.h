@@ -107,4 +107,6 @@ struct Thread {
   // so forth. These take care of updating the state and times based on the
   // provided event.
 
+  void set_ready(unsigned int time);
+
 };

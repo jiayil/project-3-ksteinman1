@@ -1,4 +1,7 @@
 #include "types/thread.h"
 
 
-// TODO: implement the behavior for your thread methods (optional)
+void Thread::set_ready(unsigned int time){
+  
+
+}

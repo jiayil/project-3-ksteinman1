@@ -63,7 +63,14 @@ void Simulation::run(const string& filename) {
 
 
 void Simulation::handle_thread_arrived(const Event* event) {
-  // TODO: handle this event properly (feel free to modify code structure, tho)
+  // Set Ready and enqueue
+  //Check and see if the processor is idle
+  //if yes, DISPATCHER INVOKED
+  //if no, check which thread has a higher priority
+
+  event->thread->set_ready(event->time);
+  scheduler->enqueue(event, event->thread);
+
   cout << "event: THREAD_ARRIVED" << endl;
 }
 
@@ -105,7 +112,7 @@ void Simulation::handle_thread_preempted(const Event* event) {
 
 
 void Simulation::handle_dispatcher_invoked(const Event* event) {
-  // TODO: handle this event properly (feel free to modify code structure, tho)
+  // 
   cout << "event: DISPATCHER_INVOKED" << endl;
 }
 
