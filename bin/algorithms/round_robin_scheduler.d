@@ -1,0 +1,17 @@
+bin/algorithms/round_robin_scheduler.o: \
+ src/algorithms/round_robin_scheduler.cpp \
+ src/algorithms/round_robin_scheduler.h src/algorithms/scheduler.h \
+ src/types/event.h src/types/scheduling_decision.h src/types/thread.h \
+ src/types/burst.h
+
+src/algorithms/round_robin_scheduler.h:
+
+src/algorithms/scheduler.h:
+
+src/types/event.h:
+
+src/types/scheduling_decision.h:
+
+src/types/thread.h:
+
+src/types/burst.h:
