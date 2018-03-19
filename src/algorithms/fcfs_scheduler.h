@@ -3,7 +3,7 @@
 #include "types/event.h"
 #include "types/scheduling_decision.h"
 #include "types/thread.h"
-
+#include <queue>
 
 /**
  * Represents a scheduling queue that uses first-come, first-served.
@@ -23,6 +23,6 @@ public:
   virtual size_t size() const override;
 
 private:
-
-  // TODO: add any instance variables you need
+  //queue to hold threads ordered by first-come first-serve
+  std::queue<Thread*> threads;
 };
