@@ -4,8 +4,17 @@ using namespace std;
 
 
 SchedulingDecision* FcfsScheduler::get_next_thread(const Event* event) {
-  //
-  return nullptr;
+  SchedulingDecision* next;
+  Thread* nextthread = NULL;
+  //return scheduling decision for next thread from queue
+  if(!threads.empty()){
+ 	nextthread = threads.front();
+	threads.pop();
+	next->thread =  nextthread;
+  }
+  //don't change time slice because it won't be preempted
+  next->explanation = "Next thread comes from front of thread queue for FCFS scheduling.";
+  return next;
 }
 
 
@@ -22,5 +31,6 @@ bool FcfsScheduler::should_preempt_on_arrival(const Event* event) const {
 
 
 size_t FcfsScheduler::size() const {
-  return 0;
+  //return size of queue
+  return threads.size();
 }
