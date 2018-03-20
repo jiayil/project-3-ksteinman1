@@ -78,9 +78,11 @@ void Simulation::handle_thread_arrived(const Event* event) {
   	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
   }
 
-  //should print info here----------------------------  
+  cout << "At time " << event->time << ":" << endl;  
 
-  cout << "event: THREAD_ARRIVED" << endl;
+  cout << "\tTHREAD_ARRIVED" << endl;
+
+  cout << "\tTransitioned from NEW to READY" << endl;
 }
 
 
@@ -99,8 +101,8 @@ void Simulation::handle_thread_dispatch_completed(const Event* event) {
   }else{
 	events.push(new Event(Event::CPU_BURST_COMPLETED, event->time + burst_length, event->thread, NULL));
   }
-  
-   cout << "event: THREAD_DISPATCH_COMPLETED" << endl;
+   cout << "At time " << event->time << ":" << endl;  
+   cout << "\tTHREAD_DISPATCH_COMPLETED" << endl;
 }
 
 
@@ -118,8 +120,8 @@ void Simulation::handle_process_dispatch_completed(const Event* event) {
   }else{
 	events.push(new Event(Event::CPU_BURST_COMPLETED, event->time + burst_length, event->thread, NULL));
   }
-
-  cout << "event: PROCESS_DISPATCH_COMPLETED" << endl;
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tPROCESS_DISPATCH_COMPLETED" << endl;
 }
 
 
@@ -128,7 +130,24 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
   //Last CPU Burst?
   //If yes, thread completed --> Set exit!
   //If no, Move to IO burst completed, set Blocked
-  cout << "event: CPU_BURST_COMPLETED" << endl;
+  int burst_length = event->thread->set_blocked(event->time);
+
+  if(burst_length==-1){
+	events.push(new Event(Event::THREAD_COMPLETED, event->time, event->thread, NULL));
+	return;
+  }
+
+  prev_thread = active_thread;
+  active_thread = NULL;
+
+  events.push(new Event(Event::IO_BURST_COMPLETED, event->time + burst_length, event->thread, NULL));
+
+  if(!active_thread){
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+  }
+
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tCPU_BURST_COMPLETED" << endl;
 }
 
 
@@ -142,14 +161,25 @@ void Simulation::handle_io_burst_completed(const Event* event) {
   if(!active_thread){
 	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
   }
-
-  cout << "event: IO_BURST_COMPLETED" << endl;
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tIO_BURST_COMPLETED" << endl;
 }
 
 
 void Simulation::handle_thread_completed(const Event* event) {
   // Set exit
-  cout << "event: THREAD_COMPLETED" << endl;
+
+  event->thread->set_exit(event->time);
+
+  prev_thread = active_thread;
+  active_thread = NULL;
+
+  if(!active_thread){
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+  }
+
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tTHREAD_COMPLETED" << endl;
 }
 
 
@@ -160,14 +190,15 @@ void Simulation::handle_thread_preempted(const Event* event) {
   event->thread->set_ready(event->time);
   scheduler->enqueue(event, event->thread);
   prev_thread = active_thread;
-  //active_thread = NULL;
+  active_thread = NULL;
 
   
   //Go back to invoking dispatcher
   if(!active_thread){
 	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
   }
-  cout << "event: THREAD_PREEMPTED" << endl;
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tTHREAD_PREEMPTED" << endl;
 }
 
 
@@ -199,8 +230,8 @@ void Simulation::handle_dispatcher_invoked(const Event* event) {
 
   }
 
-
-  cout << "event: DISPATCHER_INVOKED" << endl;
+  cout << "At time " << event->time << ":" << endl;  
+  cout << "\tDISPATCHER_INVOKED" << endl;
 }
 
 

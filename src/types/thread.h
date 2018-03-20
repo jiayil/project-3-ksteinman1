@@ -110,4 +110,8 @@ struct Thread {
   void set_ready(unsigned int time);
 
   unsigned int set_running(unsigned int time);
+
+  unsigned int set_blocked(unsigned int time);
+
+  void set_exit(unsigned int time);
 };
