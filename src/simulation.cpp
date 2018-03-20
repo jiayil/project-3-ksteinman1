@@ -135,8 +135,14 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
 void Simulation::handle_io_burst_completed(const Event* event) {
   //Set READY
   //Enqueue and pop burst
+  event->thread->set_ready(event->time);
+  scheduler->enqueue(event, event->thread);
 
   //Go back to checking if processor is idle
+  if(!active_thread){
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+  }
+
   cout << "event: IO_BURST_COMPLETED" << endl;
 }
 
@@ -151,8 +157,16 @@ void Simulation::handle_thread_preempted(const Event* event) {
   // Set READY
   //Enqueue
   //Decrease CPU Burst
+  event->thread->set_ready(event->time);
+  scheduler->enqueue(event, event->thread);
+  prev_thread = active_thread;
+  //active_thread = NULL;
+
   
   //Go back to invoking dispatcher
+  if(!active_thread){
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+  }
   cout << "event: THREAD_PREEMPTED" << endl;
 }
 
