@@ -109,4 +109,5 @@ struct Thread {
 
   void set_ready(unsigned int time);
 
+  unsigned int set_running(unsigned int time);
 };

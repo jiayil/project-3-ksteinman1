@@ -85,18 +85,30 @@ void Simulation::handle_thread_arrived(const Event* event) {
 
 
 void Simulation::handle_thread_dispatch_completed(const Event* event) {
-   cout << "event: PROCESS_DISPATCH_COMPLETED" << endl;
+  // Set RUNNING
+  //Set last thread = current thread
+//  int burst_length = event->thread->set_running(event->time);
+  
+
+  //See if time slice is less than burst time
+  //if yes, move to Thread Preempted
+  //if no, move to CPU burst completed
+  //if(
+  
+   cout << "event: THREAD_DISPATCH_COMPLETED" << endl;
 }
 
 
 void Simulation::handle_process_dispatch_completed(const Event* event) {
   // Set RUNNING
   //Set last thread = current thread
+//  int burst_length = event->thread->set_running(event->time);
+  int time_slice = event->scheduling_decision->time_slice;
 
   //See if time slice is less than burst time
   //if yes, move to Thread Preempted
   //if no, move to CPU burst completed
-  cout << "event: THREAD_DISPATCH_COMPLETED" << endl;
+  cout << "event: PROCESS_DISPATCH_COMPLETED" << endl;
 }
 
 
@@ -136,7 +148,7 @@ void Simulation::handle_thread_preempted(const Event* event) {
 
 void Simulation::handle_dispatcher_invoked(const Event* event) {
   //Get scheduling decision and set current thread
-  SchedulingDecision* dec = scheduler->get_next_thread(event); //not implemented yet
+  SchedulingDecision* dec = scheduler->get_next_thread(event); 
    
   if(!dec->thread){
 	return; 
