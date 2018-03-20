@@ -11,6 +11,10 @@ void Thread::set_ready(unsigned int time){
 
   state_change_time = time;
 
+
+  if(previous_state == State::RUNNING || previous_state == State::BLOCKED){
+	pop_burst(time);
+  }
  // cout << "\tTransitioned to READY" << endl;
 }
 
@@ -24,6 +28,12 @@ unsigned int Thread::set_running(unsigned int time){
 }
 
 unsigned int Thread::set_blocked(unsigned int time){
+  pop_burst(time);
+
+  if(bursts.size() == 0){
+	return -1;
+  }
+
   previous_state = current_state;
   current_state = State::BLOCKED;
 
@@ -38,4 +48,21 @@ void Thread::set_exit(unsigned int time){
 
   end_time = time;
   state_change_time  = time;
+}
+
+void Thread::pop_burst(unsigned int time){
+  Burst* burst = bursts.front();
+
+  if(burst->length <= (time - state_change_time)){
+	bursts.pop();
+  }else{
+	burst->length = time - state_change_time;
+  }
+
+  if(burst->type == Burst::Type::CPU){
+	service_time += time - state_change_time;
+  }else if(burst->type == Burst::Type::IO){
+	io_time += time - state_change_time;
+  }
+
 }

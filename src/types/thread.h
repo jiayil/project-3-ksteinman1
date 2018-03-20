@@ -114,4 +114,6 @@ struct Thread {
   unsigned int set_blocked(unsigned int time);
 
   void set_exit(unsigned int time);
+
+  void pop_burst(unsigned int time);
 };
