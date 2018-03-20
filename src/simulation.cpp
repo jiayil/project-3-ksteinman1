@@ -69,17 +69,16 @@ void Simulation::handle_thread_arrived(const Event* event) {
   event->thread->set_ready(event->time);
   scheduler->enqueue(event, event->thread);
   
-  
   //active_thread is the thread that is currently executing
   //events is a queue containing objects of event type
   if(!active_thread){
-  //if we are here, then the processor is idle --> move to DISPATCHER INVOKED
-//	new_event->type = Event::DISPATCHER_INVOKED;
-//	new_event->time = event->time;
-//	events.push(new_event);
+  	//if we are here, then the processor is idle --> move to DISPATCHER INVOKED
+  	//using constructor works!
   	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
   }
-  
+
+  //should print info here----------------------------  
+
   cout << "event: THREAD_ARRIVED" << endl;
 }
 
@@ -143,7 +142,12 @@ void Simulation::handle_thread_preempted(const Event* event) {
 
 void Simulation::handle_dispatcher_invoked(const Event* event) {
   //Get scheduling decision and set current thread
-  
+  SchedulingDecision* dec = scheduler->get_next_thread(event); //not implemented yet
+   
+  //if(!dec->thread){
+//	return; 
+ // }
+ 
   cout << "event: DISPATCHER_INVOKED" << endl;
 }
 

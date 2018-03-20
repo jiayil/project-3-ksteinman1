@@ -4,18 +4,24 @@ using namespace std;
 
 
 SchedulingDecision* FcfsScheduler::get_next_thread(const Event* event) {
-  SchedulingDecision* next;
+  //SchedulingDecision* next;
   Thread* nextthread = NULL;
   //return scheduling decision for next thread from queue
   if(!threads.empty()){
  	nextthread = threads.front();
 	threads.pop();
-	next->thread =  nextthread;
+//	next->thread =  nextthread;
   }
   //don't change time slice because it won't be preempted
-  next->explanation = "Next thread comes from front of thread queue for FCFS scheduling.";
-  return next;
-}
+//  next->explanation = "Next thread comes from front of thread queue for FCFS scheduling.";
+//  return next;
+  SchedulingDecision* dec = new SchedulingDecision;
+  dec->thread = nextthread;
+  dec->explanation = "Next thread comes from front of thread queue for FCFS scheduling.";
+  //no preempting
+  dec->time_slice = -1; 
+  return dec;
+} 
 
 
 void FcfsScheduler::enqueue(const Event* event, Thread* thread) {
