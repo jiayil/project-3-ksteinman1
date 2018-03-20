@@ -3,6 +3,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include "types/system_stats.h"
 
 using namespace std;
 
@@ -84,14 +85,7 @@ void Simulation::handle_thread_arrived(const Event* event) {
 
 
 void Simulation::handle_thread_dispatch_completed(const Event* event) {
-  // Get scheduling decision
-  //set current thread
-  
-  //Decision made?
-  //See if Process or Thread Switch
-  //If Thread, move to Thread Dispatch
-  //If process, move to Process Dispatch complete
-  cout << "event: PROCESS_DISPATCH_COMPLETED" << endl;
+   cout << "event: PROCESS_DISPATCH_COMPLETED" << endl;
 }
 
 
@@ -144,10 +138,31 @@ void Simulation::handle_dispatcher_invoked(const Event* event) {
   //Get scheduling decision and set current thread
   SchedulingDecision* dec = scheduler->get_next_thread(event); //not implemented yet
    
-  //if(!dec->thread){
-//	return; 
- // }
+  if(!dec->thread){
+	return; 
+  }
  
+  active_thread = dec->thread;
+  
+  //Decision made?
+  //See if Process or Thread Switch
+  //If Thread, move to Thread Dispatch
+  //If process, move to Process Dispatch complete
+
+
+  //soooo if current and previous threads are not null and both threads belong to the same process
+  if(active_thread && prev_thread && (prev_thread->process == active_thread->process)){
+	//Thread dispatch is complete
+	events.push(new Event(Event::THREAD_DISPATCH_COMPLETED, event->time + thread_switch_overhead, dec->thread, dec));
+	stats.dispatch_time += thread_switch_overhead; 
+  }else{
+	//Process dispatch is complete
+	events.push(new Event(Event::PROCESS_DISPATCH_COMPLETED, event->time + process_switch_overhead, dec->thread, dec));
+	stats.dispatch_time += process_switch_overhead; 
+
+  }
+
+
   cout << "event: DISPATCHER_INVOKED" << endl;
 }
 
