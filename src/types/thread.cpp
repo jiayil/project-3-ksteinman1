@@ -10,7 +10,9 @@ void Thread::set_ready(unsigned int time){
   current_state = State::READY;
 
   state_change_time = time;
-
+  if(previous_state == State::NEW){
+	arrival_time = time;
+  }
 
   if(previous_state == State::RUNNING || previous_state == State::BLOCKED){
 	if(bursts.size() != 0){
@@ -23,7 +25,7 @@ void Thread::set_ready(unsigned int time){
 unsigned int Thread::set_running(unsigned int time){
   previous_state = current_state;
   current_state = State::RUNNING;
-
+  if(start_time == -1){start_time = time;}
   state_change_time = time;
  // cout << "\tTransitioned to RUNNING" << endl;
 

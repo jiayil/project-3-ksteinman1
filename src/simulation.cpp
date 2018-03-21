@@ -59,7 +59,7 @@ void Simulation::run(const string& filename) {
    for(unsigned int i = 0; i < processes.size(); i++){
 	logger.print_process_details(processes[i]);
   }
-
+  stats = calculate_statistics();
   logger.print_statistics(stats);
 }
 
@@ -115,9 +115,10 @@ return temp;
 
 
 void Simulation::handle_thread_arrived(const Event* event) {
+  if(start==-1){start = event->time;}
   //Set Ready
   //Then enqueue
-
+ // event->thread->arrival_time = time;
   event->thread->set_ready(event->time);
   scheduler->enqueue(event, event->thread);
   
@@ -233,7 +234,7 @@ logger.print_state_transition(event, event->thread->previous_state, event->threa
 
 void Simulation::handle_thread_completed(const Event* event) {
   // Set exit
-
+  end = event->time;
   event->thread->set_exit(event->time);
 
   prev_thread = active_thread;
@@ -293,11 +294,11 @@ void Simulation::handle_dispatcher_invoked(const Event* event) {
   if(active_thread && prev_thread && (prev_thread->process == active_thread->process)){
 	//Thread dispatch is complete
 	events.push(new Event(Event::THREAD_DISPATCH_COMPLETED, event->time + thread_switch_overhead, dec->thread, dec));
-	stats.dispatch_time += thread_switch_overhead; 
+	dispatch += thread_switch_overhead; 
   }else{
 	//Process dispatch is complete
 	events.push(new Event(Event::PROCESS_DISPATCH_COMPLETED, event->time + process_switch_overhead, dec->thread, dec));
-	stats.dispatch_time += process_switch_overhead; 
+	dispatch += process_switch_overhead; 
 
   }
 
@@ -389,6 +390,35 @@ Thread* Simulation::read_thread(istream& in, int tid, Process* process) {
 
 
 SystemStats Simulation::calculate_statistics() {
-  // TODO: your code here (optional; feel free to modify code structure)
-  return SystemStats();
+  SystemStats s = SystemStats();
+
+  for(map <int, Process*>::iterator it = processes.begin(); it != processes.end(); it++){
+	Process::Type type = it->second->type;
+	const std::vector<Thread*> thds = it->second->threads;
+
+	for(unsigned int i = 0; i < thds.size(); i++){
+		int n = ++s.thread_counts[type];
+		int temp1 = thds[i]->service_time;
+		s.service_time += temp1;
+		s.io_time += thds[i]->io_time;
+		s.avg_thread_response_times[type] = s.avg_thread_response_times[type]*(n-1)/n + thds[i]->response_time();
+		s.avg_thread_turnaround_times[type] = s.avg_thread_turnaround_times[type]*(n-1)/n + thds[i]->turnaround_time() * 1.0/n;
+	}
+  }
+
+//total elapsed time
+  s.total_time = end - start;
+//total service time -->above
+
+//total i/o time--> above
+
+//total dispatch time
+  s.dispatch_time = dispatch;
+//total idle time
+  s.total_idle_time = s.total_time - s.dispatch_time - s.service_time;
+//cpu utilization
+  s.cpu_utilization = 100.0*(s.dispatch_time + s.service_time)/s.total_time;
+//cpu efficiency
+  s.cpu_efficiency = 100.0*s.service_time/s.total_time;
+  return s;
 }

@@ -125,4 +125,10 @@ private:
    * The amount of overhead required to switch between two processes.
    */
   size_t process_switch_overhead;
+
+  size_t start = -1;
+
+  size_t end = -1;
+
+  size_t dispatch = 0;
 };
