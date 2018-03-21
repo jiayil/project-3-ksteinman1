@@ -28,6 +28,8 @@ private:
 
   std::string type_string(Process::Type t);
 
+  std::string state_string(Thread::State s);
+
   void handle_thread_arrived(const Event* event);
 
   void handle_thread_dispatch_completed(const Event* event);

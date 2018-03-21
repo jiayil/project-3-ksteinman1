@@ -84,6 +84,30 @@ string temp = "";
 return temp;
 }
 
+string Simulation::state_string(Thread::State s){
+//Process::Type t = event->thread->process->type;
+string temp = "";
+  switch(s){
+	case Thread::State::NEW:
+		temp = "NEW";
+		break;
+	case Thread::State::READY:
+		temp = "READY";
+		break;
+	case Thread::State::RUNNING:
+		temp = "RUNNING";
+		break;
+	case Thread::State::BLOCKED:
+		temp = "BLOCKED";
+		break;
+	case Thread::State::EXIT:
+		temp = "EXIT";
+		break;
+  }  
+
+return temp;
+}
+
 
 void Simulation::handle_thread_arrived(const Event* event) {
   //Set Ready
@@ -108,7 +132,14 @@ void Simulation::handle_thread_arrived(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
-  //cout << "\tTransitioned from NEW to READY" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
 }
 
 void Simulation::handle_thread_dispatch_completed(const Event* event) {
@@ -134,6 +165,15 @@ void Simulation::handle_thread_dispatch_completed(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -160,6 +200,15 @@ void Simulation::handle_process_dispatch_completed(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -194,6 +243,15 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -215,6 +273,15 @@ void Simulation::handle_io_burst_completed(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -237,6 +304,15 @@ void Simulation::handle_thread_completed(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -263,6 +339,15 @@ void Simulation::handle_thread_preempted(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
+
+string s1 = "";
+string s2 = "";
+Thread::State prev = event->thread->previous_state;
+Thread::State curr = event->thread->current_state;
+s1 = state_string(prev);
+s2 = state_string(curr);
+  cout << "\tTransitioned from " << s1 << " to " << s2 << endl;
+
 }
 
 
@@ -301,6 +386,9 @@ void Simulation::handle_dispatcher_invoked(const Event* event) {
 temp = type_string(t);
 
   cout << "\tThread " << active_thread->id << " in process " << active_thread->process->pid << " [" << temp << "]" << endl;
+
+  cout << "\tSelected from " << active_thread->process->threads.size() << " threads; will run to completion of burst" << endl;
+
 }
 
 
