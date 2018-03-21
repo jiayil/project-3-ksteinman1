@@ -82,7 +82,7 @@ void Simulation::handle_thread_arrived(const Event* event) {
 
   cout << "\tTHREAD_ARRIVED" << endl;
 
-  cout << "\tTransitioned from NEW to READY" << endl;
+  //cout << "\tTransitioned from NEW to READY" << endl;
 }
 
 
@@ -92,7 +92,8 @@ void Simulation::handle_thread_dispatch_completed(const Event* event) {
   int burst_length = event->thread->set_running(event->time);
   int time_slice = event->scheduling_decision->time_slice;
 
-
+  prev_thread = active_thread;
+  active_thread = NULL;
   //See if time slice is less than burst time
   //if yes, move to Thread Preempted
   //if no, move to CPU burst completed
@@ -112,6 +113,8 @@ void Simulation::handle_process_dispatch_completed(const Event* event) {
   int burst_length = event->thread->set_running(event->time);
   int time_slice = event->scheduling_decision->time_slice;
 
+  prev_thread = active_thread;
+  active_thread = NULL;
   //See if time slice is less than burst time
   //if yes, move to Thread Preempted
   //if no, move to CPU burst completed
@@ -131,6 +134,9 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
   //If yes, thread completed --> Set exit!
   //If no, Move to IO burst completed, set Blocked
   int burst_length = event->thread->set_blocked(event->time);
+
+ // event->thread->pop_burst(event->time);
+
 
   if(burst_length==-1){
 	events.push(new Event(Event::THREAD_COMPLETED, event->time, event->thread, NULL));
@@ -156,6 +162,7 @@ void Simulation::handle_io_burst_completed(const Event* event) {
   //Enqueue and pop burst
   event->thread->set_ready(event->time);
   scheduler->enqueue(event, event->thread);
+  //event->thread->pop_burst(event->time);
 
   //Go back to checking if processor is idle
   if(!active_thread){
@@ -191,6 +198,8 @@ void Simulation::handle_thread_preempted(const Event* event) {
   scheduler->enqueue(event, event->thread);
   prev_thread = active_thread;
   active_thread = NULL;
+
+  event->thread->pop_burst(event->time);
 
   
   //Go back to invoking dispatcher
