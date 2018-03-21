@@ -56,6 +56,33 @@ void Simulation::run(const string& filename) {
     // Free the event's memory.
     delete event;
   }
+  cout << endl;
+  for(int i = 0; i < processes.size(); i++){
+	cout << "Process " << i << " [" << type_string(processes[i]->type) << "]:" << endl;
+	for(int j = 0; j < processes[i]->threads.size(); j++){
+		cout << "\tThread " << j << ": " << endl;
+	}
+
+  }
+  cout << endl;
+  cout << "SIMULATION COMPLETED!" << endl;
+  cout << endl;
+  cout << "SYSTEM THREADS:" << endl;
+  cout << endl;
+  cout << "INTERACTIVE THREADS:" << endl;
+  cout << endl;
+  cout << "NORMAL THREADS:" << endl;
+  cout << endl;
+  cout << "BATCH THREADS:" << endl;
+  cout << endl;
+  cout << "Total elapsed time: " << endl;
+  cout << "Total service time: " << endl;
+  cout << "Total I/O time: " << endl;
+  cout << "Total dispatch time: " << endl;
+  cout << "Total idle time: " << endl;
+  cout << endl;
+  cout << "CPU utilization: " << "%" << endl;
+  cout << "CPU efficiency: " << "%" << endl;
 }
 
 
