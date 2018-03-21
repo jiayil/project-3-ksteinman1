@@ -398,7 +398,7 @@ SystemStats Simulation::calculate_statistics() {
 
 	for(unsigned int i = 0; i < thds.size(); i++){
 		int n = ++s.thread_counts[type];
-		int temp1 = thds[i]->service_time;
+		int temp1 = thds[i]->service;
 		s.service_time += temp1;
 		s.io_time += thds[i]->io_time;
 		s.avg_thread_response_times[type] = s.avg_thread_response_times[type]*(n-1)/n + thds[i]->response_time();

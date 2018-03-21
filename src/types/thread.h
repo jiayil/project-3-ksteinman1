@@ -47,7 +47,7 @@ struct Thread {
   /**
    * The total amount of time spent executing on the CPU for this thread.
    */
-  size_t service_time = 0;
+  size_t service = 0;
 
   /**
    * The total amount of time spent doing I/O for this thread.

@@ -87,6 +87,7 @@ void Logger::print_state_transition(
 
 
 void Logger::print_process_details(Process* process) const {
+
   if (!per_thread) {
     return;
   }
@@ -104,7 +105,7 @@ void Logger::print_process_details(Process* process) const {
     cout << thread_format
         % thread->id
         % thread->arrival_time
-        % thread->service_time
+        % thread->service
         % thread->io_time
         % thread->turnaround_time()
         % thread->end_time;

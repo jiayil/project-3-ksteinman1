@@ -67,7 +67,7 @@ void Thread::pop_burst(unsigned int time){
   }
 
   if(burst->type == Burst::Type::CPU){
-	service_time += time - state_change_time;
+	service += time - state_change_time;
   }else if(burst->type == Burst::Type::IO){
 	io_time += time - state_change_time;
   }
