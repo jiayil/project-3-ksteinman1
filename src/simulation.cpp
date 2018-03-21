@@ -1,5 +1,6 @@
 #include "simulation.h"
 #include "types/event.h"
+#include "types/process.h"
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -62,6 +63,27 @@ void Simulation::run(const string& filename) {
 // Event-handling methods
 //==============================================================================
 
+string Simulation::type_string(Process::Type t){
+//Process::Type t = event->thread->process->type;
+string temp = "";
+  switch(t){
+	case Process::Type::SYSTEM:
+		temp = "SYSTEM";
+		break;
+	case Process::Type::INTERACTIVE:
+		temp = "INTERACTIVE";
+		break;
+	case Process::Type::NORMAL:
+		temp = "NORMAL";
+		break;
+	case Process::Type::BATCH:
+		temp = "BATCH";
+		break;
+  }  
+
+return temp;
+}
+
 
 void Simulation::handle_thread_arrived(const Event* event) {
   //Set Ready
@@ -81,10 +103,13 @@ void Simulation::handle_thread_arrived(const Event* event) {
   cout << "At time " << event->time << ":" << endl;  
 
   cout << "\tTHREAD_ARRIVED" << endl;
+  string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
 
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
   //cout << "\tTransitioned from NEW to READY" << endl;
 }
-
 
 void Simulation::handle_thread_dispatch_completed(const Event* event) {
   // Set RUNNING
@@ -104,6 +129,11 @@ void Simulation::handle_thread_dispatch_completed(const Event* event) {
   }
    cout << "At time " << event->time << ":" << endl;  
    cout << "\tTHREAD_DISPATCH_COMPLETED" << endl;
+   string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -125,6 +155,11 @@ void Simulation::handle_process_dispatch_completed(const Event* event) {
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tPROCESS_DISPATCH_COMPLETED" << endl;
+ string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -154,6 +189,11 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
 
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tCPU_BURST_COMPLETED" << endl;
+ string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -170,6 +210,11 @@ void Simulation::handle_io_burst_completed(const Event* event) {
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tIO_BURST_COMPLETED" << endl;
+ string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -187,6 +232,11 @@ void Simulation::handle_thread_completed(const Event* event) {
 
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tTHREAD_COMPLETED" << endl;
+ string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -208,6 +258,11 @@ void Simulation::handle_thread_preempted(const Event* event) {
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tTHREAD_PREEMPTED" << endl;
+ string temp;
+  Process::Type t = event->thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << event->thread->id << " in process " << event->thread->process->pid << " [" << temp << "]" << endl;
 }
 
 
@@ -241,6 +296,11 @@ void Simulation::handle_dispatcher_invoked(const Event* event) {
 
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tDISPATCHER_INVOKED" << endl;
+ string temp;
+ Process::Type t = active_thread->process->type;
+temp = type_string(t);
+
+  cout << "\tThread " << active_thread->id << " in process " << active_thread->process->pid << " [" << temp << "]" << endl;
 }
 
 

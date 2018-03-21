@@ -7,7 +7,7 @@
 #include <fstream>
 #include <map>
 #include <queue>
-
+#include <string>
 
 typedef std::priority_queue<const Event *, std::vector<const Event *>,
                             EventComparator>
@@ -25,6 +25,8 @@ public:
 
 // EVENT HANDLING METHODS
 private:
+
+  std::string type_string(Process::Type t);
 
   void handle_thread_arrived(const Event* event);
 

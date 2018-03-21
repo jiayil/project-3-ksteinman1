@@ -1,7 +1,7 @@
 #pragma once
 #include "thread.h"
 #include <vector>
-
+#include <string>
 
 /**
  * Represents a simple process, which encapsulates one or more threads.
@@ -18,6 +18,8 @@ struct Process {
     BATCH
   };
 
+  //atic const char* TypeNames[] = {"SYSTEM", "INTERACTIVE", "NORMAL", "BATCH"};
+  
   /**
    * The ID of this process.
    */
@@ -37,4 +39,5 @@ struct Process {
    * Constructor.
    */
   Process(int pid, Type type) : pid(pid), type(type) {}
+
 };
