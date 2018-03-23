@@ -127,7 +127,7 @@ void Simulation::handle_thread_arrived(const Event* event) {
   if(!active_thread){
   	//if we are here, then the processor is idle --> move to DISPATCHER INVOKED
   	//using constructor works!
-  	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+  	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, NULL, NULL));
   }
 
   cout << "At time " << event->time << ":" << endl;  
@@ -194,7 +194,7 @@ void Simulation::handle_cpu_burst_completed(const Event* event) {
 
 
   if(burst_length==-1){
-	events.push(new Event(Event::THREAD_COMPLETED, event->time, event->thread, NULL));
+	events.push(new Event(Event::THREAD_COMPLETED, event->time/* + event->thread->bursts.front()->length*/, event->thread, NULL));
 	return;
   }
 
@@ -223,7 +223,7 @@ void Simulation::handle_io_burst_completed(const Event* event) {
 
   //Go back to checking if processor is idle
   if(!active_thread){
-	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time/* + event->thread->bursts.front()->length*/, NULL, NULL));
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tIO_BURST_COMPLETED" << endl;
@@ -241,7 +241,7 @@ void Simulation::handle_thread_completed(const Event* event) {
   active_thread = NULL;
 
   if(!active_thread){
-	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time/* + event->thread->bursts.front()->length*/, NULL, NULL));
   }
 
   cout << "At time " << event->time << ":" << endl;  
@@ -265,7 +265,7 @@ void Simulation::handle_thread_preempted(const Event* event) {
   
   //Go back to invoking dispatcher
   if(!active_thread){
-	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, NULL, NULL));
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, NULL, NULL));
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tTHREAD_PREEMPTED" << endl;

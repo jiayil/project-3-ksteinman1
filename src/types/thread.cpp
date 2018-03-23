@@ -12,13 +12,16 @@ void Thread::set_ready(unsigned int time){
   state_change_time = time;
   if(previous_state == State::NEW){
 	arrival_time = time;
+//	state_change_time = arrival_time;
   }
-
+//if(state_change_time == -1){state_change_time = time;}
   if(previous_state == State::RUNNING || previous_state == State::BLOCKED){
 	if(bursts.size() != 0){
+//state_change_time = time;
 	pop_burst(time);
 	}
   }
+state_change_time = time;
  // cout << "\tTransitioned to READY" << endl;
 }
 
@@ -53,13 +56,14 @@ void Thread::set_exit(unsigned int time){
   current_state = State::EXIT;
 
   end_time = time;
-  state_change_time  = time;
+  state_change_time = time;
 }
 
 void Thread::pop_burst(unsigned int time){
   //Burst* burst = bursts.front();
   //if(!bursts.empty()){
   Burst* burst = bursts.front();
+//if(state_change_time == -1){state_change_time = time;}
   if(burst->length <= (time - state_change_time)){
 	bursts.pop();
   }else{
