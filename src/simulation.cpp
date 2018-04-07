@@ -115,13 +115,21 @@ return temp;
 
 
 void Simulation::handle_thread_arrived(const Event* event) {
-  if(start==-1){start = event->time;}
+  //if(start==-1){start = event->time;}
   //Set Ready
   //Then enqueue
  // event->thread->arrival_time = time;
-  event->thread->set_ready(event->time);
-  scheduler->enqueue(event, event->thread);
+  //event->thread->set_ready(event->time);
+ 
+if(event->thread->current_state == Thread::State::NEW){
+	event->thread->current_state = Thread::State::READY;
+	event->thread->previous_state = Thread::State::NEW;
+}
+
+ scheduler->enqueue(event, event->thread);
   
+event->thread->start_time = event->time;
+
   //active_thread is the thread that is currently executing
   //events is a queue containing objects of event type
   if(!active_thread){
