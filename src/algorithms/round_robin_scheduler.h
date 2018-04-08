@@ -3,7 +3,7 @@
 #include "types/event.h"
 #include "types/scheduling_decision.h"
 #include "types/thread.h"
-
+#include <queue>
 
 /**
  * Represents a scheduling queue that uses simple round-robin.
@@ -33,4 +33,5 @@ private:
   const size_t time_slice;
 
   // TODO: add any instance variables you need
+  std::queue<Thread*> rthreads;
 };

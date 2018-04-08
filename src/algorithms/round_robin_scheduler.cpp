@@ -4,23 +4,28 @@ using namespace std;
 
 
 SchedulingDecision* RoundRobinScheduler::get_next_thread(const Event* event) {
-  // TODO: implement me
-  return nullptr;
+  SchedulingDecision* dec = new SchedulingDecision();
+  dec->thread = rthreads.front();
+  dec->time_slice = time_slice;
+  rthreads.pop();
+
+  dec->explanation = "Selected from threads...round robin";
+  return dec;
 }
 
 
 void RoundRobinScheduler::enqueue(const Event* event, Thread* thread) {
-  // TODO: implement me
+  if(thread!=NULL){
+	rthreads.push(thread);
+  }
 }
 
 
-bool RoundRobinScheduler::should_preempt_on_arrival(const Event* event) const {
-  // TODO: implement me
-  return false;
+bool RoundRobinScheduler::should_preempt_on_arrival(const Event* event) const { //is preemptive
+  return true;
 }
 
 
 size_t RoundRobinScheduler::size() const {
-  // TODO: implement me
-  return 0;
+  return rthreads.size();
 }

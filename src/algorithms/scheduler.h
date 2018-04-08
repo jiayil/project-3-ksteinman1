@@ -2,7 +2,7 @@
 #include "types/event.h"
 #include "types/scheduling_decision.h"
 #include "types/thread.h"
-
+#include <queue>
 
 /**
  * Abstract base class for all scheduling algorithms.
@@ -34,6 +34,9 @@ struct Scheduler {
    * Returns true if the scheduler has no threads in its ready queues.
    */
   bool empty() const { return size() == 0; }
+
+
+  //virtual std::queue<Thread*> threads;
 
   /**
    * Virtual destructor (as a best practice).
