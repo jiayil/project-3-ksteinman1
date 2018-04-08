@@ -375,12 +375,12 @@ logger.print_state_transition(event, event->thread->previous_state, event->threa
 void Simulation::handle_dispatcher_invoked(const Event* event) {
   //Get scheduling decision and set current thread
   SchedulingDecision* dec = scheduler->get_next_thread(event); 
-   
+  logger.print_verbose(event, event->thread, dec->explanation);
   if(!dec->thread){
 	return; 
   }
  
-  active_thread = dec->thread;
+  //active_thread = dec->thread;
   
   //Decision made?
   //See if Process or Thread Switch
