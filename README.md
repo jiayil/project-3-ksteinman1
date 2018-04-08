@@ -3,19 +3,33 @@
 1. Name: Katrina Steinman
 
 2. List of Files:
+
 fcfs_scheduler.{cpp,h} = Functions and variables for the FCFS algorithm.
+
 multilevel_feedback_scheduler.{cpp,h} = Functions and variables for the MLFS algorithm.
+
 priority_scheduler.{cpp,h} = Functions and variables for the PRIORITY algorithm.
+
 round_robin_scheduler.{cpp,h} = Functions and variables for the RR algorithm.
+
 logger.{cpp,h} = methods for printing output
+
 flags.{cpp,h} = implementing help, verbose, and algorithm flags
+
 burst.h = properties for the Burst object type
+
 event.h = properties for the Event object type
+
 process.h = properties for the Process object type
+
 system_stats = properties for the Stats object type
+
 thread.{cpp,h} = functions and variables for the Thread object type
+
 scheduling_decision.h = properties for the SchedulingDecision object type
+
 simulation.{cpp,h} = methods for running the simulated scheduler
+
 
 3. Hours spent: 40
 
