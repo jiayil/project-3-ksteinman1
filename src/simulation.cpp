@@ -260,8 +260,11 @@ event->thread->bursts.pop();
   //}
 
 if(event->thread->bursts.size() > 0){
+	assert(event->thread->current_state == Thread::State::RUNNING);
 	event->thread->previous_state = Thread::State::RUNNING;
 	event->thread->current_state = Thread::State::BLOCKED;
+	assert(event->thread->current_state == Thread::State::BLOCKED);
+	assert(event->thread->previous_state == Thread::State::RUNNING);
 
 	int bl = event->thread->bursts.front()->length;
 	events.push(new Event(Event::IO_BURST_COMPLETED, event->time + bl, event->thread, NULL));
@@ -282,8 +285,11 @@ void Simulation::handle_io_burst_completed(const Event* event) {
   //Set READY
   //Enqueue and pop burst
   //event->thread->set_ready(event->time);
+assert(event->thread->current_state == Thread::State::BLOCKED);
 event->thread->previous_state = Thread::State::BLOCKED;
 event->thread->current_state = Thread::State::READY;  
+assert(event->thread->current_state = Thread::State::READY);
+assert(event->thread->previous_state = Thread::State::BLOCKED);
 
 scheduler->enqueue(event, event->thread);
   //event->thread->pop_burst(event->time);
@@ -315,9 +321,11 @@ void Simulation::handle_thread_completed(const Event* event) {
   // Set exit
   //end = event->time;
   //event->thread->set_exit(event->time);
-
+assert(event->thread->current_state == Thread::State::RUNNING);
 event->thread->previous_state = Thread::State::RUNNING;
 event->thread->current_state = Thread::State::EXIT;
+assert(event->thread->current_state == Thread::State::EXIT);
+assert(event->thread->previous_state == Thread::State::RUNNING);
 
  // prev_thread = active_thread;
  // active_thread = NULL;
@@ -341,19 +349,21 @@ void Simulation::handle_thread_preempted(const Event* event) {
   //Enqueue
   //Decrease CPU Burst
   //event->thread->set_ready(event->time);
-  
+  assert(event->thread->current_state == Thread::State::RUNNING);
 event->thread->previous_state = Thread::State::RUNNING;
 event->thread->current_state = Thread::State::READY;
+assert(event->thread->current_state == Thread::State::READY);
+assert(event->thread->previous_state == Thread::State::RUNNING);
 
 scheduler->enqueue(event, event->thread);
-  prev_thread = active_thread;
+ // prev_thread = active_thread;
   active_thread = NULL;
 
 
   
   //Go back to invoking dispatcher
   if(!active_thread){
-	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, NULL, NULL));
+	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, event->thread, NULL));
   }
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tTHREAD_PREEMPTED" << endl;
