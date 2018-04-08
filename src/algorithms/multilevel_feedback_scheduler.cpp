@@ -42,7 +42,7 @@ SchedulingDecision* MultilevelFeedbackScheduler::get_next_thread(
 	return NULL;
   }  
   
-  dec->explanation = "Selected from threads...";
+  dec->explanation = "Selected from threads based on priority.";
   dec->time_slice = 3;
 
   return dec;
@@ -65,7 +65,8 @@ void MultilevelFeedbackScheduler::enqueue(const Event* event, Thread* thread) {
 		break;
   }  
 
-  
+ //favor threads that are preempted less
+ 
 
 }
 

@@ -88,14 +88,14 @@ struct Thread {
       process(process) {}
 
   size_t response_time() const {
-    assert(current_state == EXIT);
+   // assert(current_state == EXIT);
     
     return start_time - arrival_time;
   }
   
   
   size_t turnaround_time() const {
-    assert(current_state == EXIT);
+   // assert(current_state == EXIT);
   
     return end_time - start_time;
   }

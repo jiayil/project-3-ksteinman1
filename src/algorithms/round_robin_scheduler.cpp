@@ -9,7 +9,7 @@ SchedulingDecision* RoundRobinScheduler::get_next_thread(const Event* event) {
   dec->time_slice = time_slice;
   rthreads.pop();
 
-  dec->explanation = "Selected from threads...round robin";
+  dec->explanation = "Selected from " + to_string(rthreads.size()) + "Threads; will run for at most 3 ticks.";
   return dec;
 }
 

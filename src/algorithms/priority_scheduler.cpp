@@ -22,7 +22,7 @@ SchedulingDecision* PriorityScheduler::get_next_thread(const Event* event) {
 	return NULL;
   }
 
-  dec->explanation = "Selected based on priority.....";
+  dec->explanation = "Selected based on priority. Will run to completion of burst.";
   return dec;
 }
 

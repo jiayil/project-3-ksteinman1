@@ -17,7 +17,7 @@ SchedulingDecision* FcfsScheduler::get_next_thread(const Event* event) {
 //  return next;
   SchedulingDecision* dec = new SchedulingDecision;
   dec->thread = nextthread;
-  dec->explanation = "Next thread comes from front of thread queue for FCFS scheduling.";
+  dec->explanation = "Selected from " + to_string(threads.size()) + "threads; will run to completion of burst.";
   //no preempting
   dec->time_slice = -1; 
   return dec;
