@@ -120,11 +120,13 @@ void Simulation::handle_thread_arrived(const Event* event) {
   //Then enqueue
  // event->thread->arrival_time = time;
   //event->thread->set_ready(event->time);
- 
+ assert(event->thread->current_state == Thread::State::NEW);
 if(event->thread->current_state == Thread::State::NEW){
 	event->thread->current_state = Thread::State::READY;
 	event->thread->previous_state = Thread::State::NEW;
 }
+assert(event->thread->current_state == Thread::State::READY);
+assert(event->thread->previous_state == Thread::State::NEW);
 
  scheduler->enqueue(event, event->thread);
   
@@ -135,7 +137,7 @@ event->thread->start_time = event->time;
   if(!active_thread){
   	//if we are here, then the processor is idle --> move to DISPATCHER INVOKED
   	//using constructor works!
-  	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, NULL, NULL));
+  	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, event->thread, NULL));
   }
 
   cout << "At time " << event->time << ":" << endl;  
@@ -264,7 +266,9 @@ if(event->thread->bursts.size() > 0){
 }else{
 	events.push(new Event(Event::THREAD_COMPLETED, event->time, event->thread, NULL));
 }
- //add_event Dispatcher invoked
+
+events.push(new Event(Event::DISPATCHER_INVOKED, event->time, event->thread, NULL));
+
   cout << "At time " << event->time << ":" << endl;  
   cout << "\tCPU_BURST_COMPLETED" << endl;
 
