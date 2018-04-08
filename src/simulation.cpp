@@ -151,7 +151,7 @@ void Simulation::handle_thread_dispatch_completed(const Event* event) {
   // Set RUNNING
   //Set last thread = current thread
   //int burst_length = event->thread->set_running(event->time);
-  int time_slice = event->scheduling_decision->time_slice;
+  size_t time_slice = event->scheduling_decision->time_slice;
   Burst* bl = event->thread->bursts.front();
 
   prev_thread = active_thread;
@@ -164,9 +164,11 @@ if(event->thread->previous_state == Thread::State::NEW){
 	event->thread->state_change_time = event->time;
 }
 
+assert(event->thread->current_state == Thread::State::READY);
 event->thread->previous_state = Thread::State::READY;
 event->thread->current_state = Thread::State::RUNNING;
-
+assert(event->thread->current_state == Thread::State::RUNNING);
+assert(event->thread->previous_state == Thread::State::READY);
 
 
 //  if(time_slice < burst_length){
@@ -175,7 +177,7 @@ event->thread->current_state = Thread::State::RUNNING;
 //	events.push(new Event(Event::CPU_BURST_COMPLETED, event->time + burst_length, event->thread, NULL));
  // }
 
-if(time_slice < bl->length){
+if(time_slice < (unsigned)bl->length){
 	bl->length -= event->scheduling_decision->time_slice;
 	event->thread->service += event->scheduling_decision->time_slice;
 	events.push(new Event(Event::THREAD_PREEMPTED, event->time + time_slice, event->thread, NULL));
