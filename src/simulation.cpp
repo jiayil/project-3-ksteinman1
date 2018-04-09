@@ -374,12 +374,16 @@ logger.print_state_transition(event, event->thread->previous_state, event->threa
 
 void Simulation::handle_dispatcher_invoked(const Event* event) {
   //Get scheduling decision and set current thread
-  SchedulingDecision* dec = scheduler->get_next_thread(event); 
-  logger.print_verbose(event, event->thread, dec->explanation);
-  if(!dec->thread){
+  SchedulingDecision* dec = new SchedulingDecision();
+dec = scheduler->get_next_thread(event);
+if(!event){return;} 
+  //logger.print_verbose(event, event->thread, dec->explanation);
+  if(!dec){ return;}
+  if(!(dec->thread)){
 	return; 
   }
- 
+ logger.print_verbose(event, event->thread, dec->explanation);
+
   //active_thread = dec->thread;
   
   //Decision made?
