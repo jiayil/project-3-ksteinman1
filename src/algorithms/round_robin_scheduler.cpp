@@ -7,9 +7,10 @@ SchedulingDecision* RoundRobinScheduler::get_next_thread(const Event* event) {
   SchedulingDecision* dec = new SchedulingDecision();
   dec->thread = rthreads.front();
   dec->time_slice = time_slice;
+if(rthreads.size() > 0){ 
   rthreads.pop();
-
   dec->explanation = "Selected from " + to_string(rthreads.size()) + "Threads; will run for at most 3 ticks.";
+}
   return dec;
 }
 

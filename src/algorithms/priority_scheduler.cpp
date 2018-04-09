@@ -5,23 +5,23 @@ using namespace std;
 
 SchedulingDecision* PriorityScheduler::get_next_thread(const Event* event) {
   SchedulingDecision* dec = new SchedulingDecision();
-  
-  if(queue1.size() > 0){
+ //if(event){ 
+  if(queue1.size() != 0){
 	dec->thread = queue1.front();
 	queue1.pop();
-  }else if(queue2.size() > 0){
+  }else if(queue2.size() != 0){
 	dec->thread = queue2.front();
 	queue2.pop();
-  }else if(queue3.size() > 0){
+  }else if(queue3.size() != 0){
 	dec->thread = queue3.front();
 	queue3.pop();
-  }else if(queue4.size() > 0){
+  }else if(queue4.size() != 0){
 	dec->thread = queue4.front();
 	queue4.pop();
   }else{
 	return NULL;
   }
-
+//}
   dec->explanation = "Selected based on priority. Will run to completion of burst.";
   return dec;
 }
@@ -29,7 +29,7 @@ SchedulingDecision* PriorityScheduler::get_next_thread(const Event* event) {
 
 void PriorityScheduler::enqueue(const Event* event, Thread* thread) {
   Process::Type t = event->thread->process->type;
-
+if(thread){
   if(t == Process::Type::SYSTEM){
 	queue1.push(thread);
   }else if(t == Process::Type::INTERACTIVE){
@@ -39,6 +39,7 @@ void PriorityScheduler::enqueue(const Event* event, Thread* thread) {
   }else{
 	queue4.push(thread);
   }
+}
 return;
 }
 

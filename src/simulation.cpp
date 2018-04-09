@@ -68,7 +68,7 @@ void Simulation::run(const string& filename) {
 // Event-handling methods
 //==============================================================================
 
-string Simulation::type_string(Process::Type t){
+/*string Simulation::type_string(Process::Type t){
 //Process::Type t = event->thread->process->type;
 string temp = "";
   switch(t){
@@ -87,9 +87,9 @@ string temp = "";
   }  
 
 return temp;
-}
+}*/
 
-string Simulation::state_string(Thread::State s){
+/*string Simulation::state_string(Thread::State s){
 //Process::Type t = event->thread->process->type;
 string temp = "";
   switch(s){
@@ -111,7 +111,7 @@ string temp = "";
   }  
 
 return temp;
-}
+}*/
 
 
 void Simulation::handle_thread_arrived(const Event* event) {
@@ -140,9 +140,9 @@ event->thread->start_time = event->time;
   	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, event->thread, NULL));
   }
 
-  cout << "At time " << event->time << ":" << endl;  
+//  cout << "At time " << event->time << ":" << endl;  
 
-  cout << "\tTHREAD_ARRIVED" << endl;
+  //cout << "\tTHREAD_ARRIVED" << endl;
 
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -185,8 +185,8 @@ if(time_slice < (unsigned)bl->length){
 	events.push(new Event(Event::CPU_BURST_COMPLETED, event->time + bl->length, event->thread, NULL));
 }
 
-   cout << "At time " << event->time << ":" << endl;  
-   cout << "\tTHREAD_DISPATCH_COMPLETED" << endl;
+ //  cout << "At time " << event->time << ":" << endl;  
+   //cout << "\tTHREAD_DISPATCH_COMPLETED" << endl;
    
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -219,8 +219,8 @@ event->thread->current_state = Thread::State::RUNNING;
 
 handle_thread_dispatch_completed(event);
 
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tPROCESS_DISPATCH_COMPLETED" << endl;
+//  cout << "At time " << event->time << ":" << endl;  
+  //cout << "\tPROCESS_DISPATCH_COMPLETED" << endl;
 
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -274,8 +274,8 @@ if(event->thread->bursts.size() > 0){
 
 events.push(new Event(Event::DISPATCHER_INVOKED, event->time, event->thread, NULL));
 
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tCPU_BURST_COMPLETED" << endl;
+//  cout << "At time " << event->time << ":" << endl;  
+  //cout << "\tCPU_BURST_COMPLETED" << endl;
 
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -310,8 +310,8 @@ if(!active_thread){
 	events.push(new Event(Event::DISPATCHER_INVOKED, event->time, event->thread, NULL));
 }
 
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tIO_BURST_COMPLETED" << endl;
+//  cout << "At time " << event->time << ":" << endl;  
+  //cout << "\tIO_BURST_COMPLETED" << endl;
  
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -337,8 +337,8 @@ assert(event->thread->previous_state == Thread::State::RUNNING);
 stats.total_time = event->time;
 event->thread->end_time = event->time;
 
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tTHREAD_COMPLETED" << endl;
+//  cout << "At time " << event->time << ":" << endl;  
+  //cout << "\tTHREAD_COMPLETED" << endl;
 
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -365,8 +365,8 @@ scheduler->enqueue(event, event->thread);
   if(!active_thread){
 	events.push(new Event(Event::DISPATCHER_INVOKED, event->time /*+ event->thread->bursts.front()->length*/, event->thread, NULL));
   }
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tTHREAD_PREEMPTED" << endl;
+ // cout << "At time " << event->time << ":" << endl;  
+  //cout << "\tTHREAD_PREEMPTED" << endl;
 
 logger.print_state_transition(event, event->thread->previous_state, event->thread->current_state);
 }
@@ -415,8 +415,8 @@ if(prev_thread != NULL){
 
 active_thread = dec->thread;
 
-  cout << "At time " << event->time << ":" << endl;  
-  cout << "\tDISPATCHER_INVOKED" << endl;
+//  cout << "At time " << event->time << ":" << endl;  
+ // cout << "\tDISPATCHER_INVOKED" << endl;
 
 //logger.print_state_transition(event, active_thread->previous_state, active_thread->current_state);
 }
