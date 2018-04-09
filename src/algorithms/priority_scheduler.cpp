@@ -30,15 +30,25 @@ SchedulingDecision* PriorityScheduler::get_next_thread(const Event* event) {
 void PriorityScheduler::enqueue(const Event* event, Thread* thread) {
   Process::Type t = event->thread->process->type;
 if(thread){
-  if(t == Process::Type::SYSTEM){
+  //if(t == Process::Type::SYSTEM){
+switch(event->thread->process->type){
+	case Process::Type::SYSTEM:
 	queue1.push(thread);
-  }else if(t == Process::Type::INTERACTIVE){
+	break;
+//  }else if(t == Process::Type::INTERACTIVE){
+	case Process::Type::INTERACTIVE:
 	queue2.push(thread);
-  }else if(t == Process::Type::NORMAL){
+	break;
+//  }else if(t == Process::Type::NORMAL){
+	case Process::Type::NORMAL:
 	queue3.push(thread);
-  }else{
+	break;
+//  }else{
+	case Process::Type::BATCH:
 	queue4.push(thread);
-  }
+	break;
+//  }
+}
 }
 return;
 }

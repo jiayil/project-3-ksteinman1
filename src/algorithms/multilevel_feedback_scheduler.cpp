@@ -19,7 +19,7 @@ SchedulingDecision* MultilevelFeedbackScheduler::get_next_thread(
 //		break;
 //	}
  // }
-
+if(event){
   if(q1.size() > 0){
 	dec->thread = q1.front();
 	q1.pop();
@@ -44,12 +44,13 @@ SchedulingDecision* MultilevelFeedbackScheduler::get_next_thread(
   
   dec->explanation = "Selected from threads based on priority.";
   dec->time_slice = 3;
-
+}
   return dec;
 }
 
 
 void MultilevelFeedbackScheduler::enqueue(const Event* event, Thread* thread) {
+if(thread){
   switch(event->thread->process->type){
 	case Process::Type::SYSTEM:
 		q1.push(thread);		
@@ -66,7 +67,8 @@ void MultilevelFeedbackScheduler::enqueue(const Event* event, Thread* thread) {
   }  
 
  //favor threads that are preempted less
- 
+ }
+  
 
 }
 
@@ -85,6 +87,7 @@ size_t MultilevelFeedbackScheduler::size() const {
 //	size += robins[i]->size();
   //}
 
+  size = q1.size() + q2.size() + q3.size() + q4.size() + q6.size() + q5.size();
 
   return size;
 }
